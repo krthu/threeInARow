@@ -2,14 +2,16 @@ public class Player {
     private String name;
     private int score;
 
-    private String sign;
+    protected char sign;
 
-    public Player(String name, String sign){
+    public Player(String name, char sign){
         this.name = name;
         this.sign = sign;
         score = 0;
     }
 
-
+    public String toString(){
+        return "Name: " + name + " Score: " + score + " Sign: " + sign;
+    }
 
 }
