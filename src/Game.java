@@ -1,11 +1,18 @@
 public class Game {
     private int boardSize;
 
+    private int maxRound;
+
     private Character[][] board;
 
     public Game(int boardSize){
         this.boardSize = boardSize;
         board = new Character[boardSize][boardSize];
+        maxRound = boardSize*boardSize;
+    }
+
+    public int getMaxRound() {
+        return maxRound;
     }
 
     public boolean placeSign(int index, char sign){

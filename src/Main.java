@@ -31,18 +31,30 @@ public class Main {
         System.out.println(p2);
         boolean winner = false;
  //       Player[][] array = new Player[3][3];
-
-        Game game = new Game(3);
-        int index = sc.nextInt();
-        index = index-1;
-
-        game.placeSign(index, p1.sign);
+        int gameRound = 0;
+        Player activePlayer = null;
+        Game game = new Game(4);
         System.out.println(game.getGameState());
+    while (!winner &&  gameRound != game.getMaxRound() ) {
+        if (activePlayer == null || activePlayer == p2) {
+            activePlayer = p1;
+        } else {
+            activePlayer = p2;
+        }
+        boolean validMove = false;
+        while (!validMove){
+            System.out.println(activePlayer.getName() + ": It´s your turn.");
+            int index = sc.nextInt();
+            index = index - 1;
+            validMove = game.placeSign(index, activePlayer.sign);
+            System.out.println(game.getGameState());
+        }
+        gameRound += 1;
+    }
 
-        index = sc.nextInt();
-        index -= 1;
-        System.out.println(game.placeSign(index, p2.sign));
-        System.out.println(game.getGameState());
+
+
+
 
 //        array[0][2] = p1.sign;
 //        array[0][1] = p2.sign;
