@@ -33,7 +33,7 @@ public class Main {
  //       Player[][] array = new Player[3][3];
         int gameRound = 0;
         Player activePlayer = null;
-        Game game = new Game(4);
+        Game game = new Game(5);
         System.out.println(game.getGameState());
     while (!winner &&  gameRound != game.getMaxRound() ) {
         if (activePlayer == null || activePlayer == p2) {
