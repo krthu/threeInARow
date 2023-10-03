@@ -45,16 +45,72 @@ public class Game {
         // CheckForHorizontalWin
        // System.out.println("H " + checkHorizontalWinner(signToSearchFor, indexOfPlacedSign));
         //
-        System.out.println("V " + checkVericalWinner(signToSearchFor, indexOfPlacedSign));
+        //System.out.println("V " + checkVericalWinner(signToSearchFor, indexOfPlacedSign));
 
-        return true;
+        //Check horizontal
+        int nrInARow = 1;
+
+
+        int cellsToTheLeft = indexOfPlacedSign % boardSize;
+        int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
+        nrInARow += howManyInARow(cellsToTheLeft, -1, indexOfPlacedSign, signToSearchFor); // Search Left
+        nrInARow += howManyInARow(cellsToTheRight, 1, indexOfPlacedSign, signToSearchFor); // Search Right
+        if (nrInARow == numberInARowToWin){
+            return true;
+        }
+        nrInARow = 1;
+
+        // Check Vertical
+        int rowIndex = indexOfPlacedSign / boardSize;
+        nrInARow += howManyInARow(rowIndex, -boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(boardSize -1 - rowIndex, boardSize, indexOfPlacedSign, signToSearchFor);
+        if (nrInARow == numberInARowToWin){
+            return true;
+        }
+
+
+        return false;
+    }
+
+
+
+    public int howManyInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor){
+
+        int countsOfSignsInARow = 0;
+        for (int i = 1; i <= maxIterations; i++){
+            if(board[indexOfPlacedSign + (i * steps)] != null && board[indexOfPlacedSign + (i * steps)] == signToSearchFor ){
+                countsOfSignsInARow++;
+            }else break;
+        }
+        return countsOfSignsInARow;
     }
 
     public boolean checkVericalWinner(char signToSearchFor, int indexOfPlacedSign){
-        int countsOfSignsInARow = 1;
+        int countOfSignsInARow = 1;
         int rowIndex = indexOfPlacedSign / boardSize;
         System.out.println(rowIndex);
 
+        for (int i = 1; i <= rowIndex; i++){
+        //    System.out.println("Down");
+            if(board[indexOfPlacedSign - (i * boardSize)] == null ||
+                    board[indexOfPlacedSign - (i * boardSize)] != signToSearchFor){
+                break;
+            }else {
+                countOfSignsInARow++;
+            }
+        }
+        for (int i = rowIndex; i < boardSize -1; i++){
+           // System.out.println("Up");
+            if(board[indexOfPlacedSign + (i * boardSize)] == null ||
+                    board[indexOfPlacedSign + (i * boardSize)] != signToSearchFor){
+                break;
+            }else {
+                countOfSignsInARow++;
+            }
+        }
+        if(countOfSignsInARow == numberInARowToWin){
+            return true;
+        }
         return false;
     }
 
@@ -69,7 +125,7 @@ public class Game {
                 countOfSignsInARow++;
             }
         }
-        for (int i = 1;  i < boardSize; i++ ){
+        for (int i = colIndex;  i < boardSize -1; i++ ){
             if(board[indexOfPlacedSign + i] == null || board[indexOfPlacedSign + i ] != signToSearchFor){
                 break;
             }else{
