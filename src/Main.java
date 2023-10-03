@@ -3,83 +3,73 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        // Introduce the game
+        System.out.println("Welcome to TicTacToe");
 
-        // Ask for players name
-        //Create the players
+        System.out.println("What is the name of player 1:");
+        String player1Name = sc.nextLine();
+        System.out.println("What is the name of player 2");
+        String player2Name = sc.nextLine();
+        Player p1 = new Player(player1Name, 'x');
+        Player p2 = new Player(player2Name, 'O');
+
         // Add to Player - array
+        System.out.println("How many row and columns do you whant?");
+        System.out.println("Type 3 for a 3*3 board.");
+        int boardSize = sc.nextInt();
+        sc.nextLine();
 
+        System.out.println("How many in a row do you need to win?");
+        int inARowToWin = sc.nextInt();
+        sc.nextLine();
 
-        // Create the GameBoard
-
-        // Loop until players are done with game
-            //Loop over players until someone wins Or Scoreboard is full .
-                //Ask player for input
-                //Save the input
-                //Check for winner
-                //if weHaveAWinner
-                    //Player gets score
-                    // breaks loop
-                //else if Game board is full
-                    // Print that it is a tie game
-                    // Break loop
-            //Ask for another game
-
-        Player p1 = new Player("Knut", 'x');
-        Player p2 = new Player("Stina", 'O');
-        System.out.println(p1);
-        System.out.println(p2);
+        Game game = new Game(boardSize, inARowToWin);
         boolean winner = false;
  //       Player[][] array = new Player[3][3];
         int gameRound = 0;
         Player activePlayer = null;
-        Game game = new Game(3);
-        System.out.println(game.getGameState());
-    while (!winner &&  gameRound != game.getMaxRound() ) {
-        if (activePlayer == null || activePlayer == p2) {
-            activePlayer = p1;
-        } else {
-            activePlayer = p2;
-        }
-        boolean validMove = false;
-        while (!validMove){
-            System.out.println(activePlayer.getName() + ": It´s your turn.");
-            int index = sc.nextInt();
-            index = index - 1;
-            validMove = game.placeSign(index, activePlayer.sign);
+
+        String again = "y";
+        while (again.equalsIgnoreCase("y")) {
             System.out.println(game.getGameState());
+            while (!winner && gameRound != game.getMaxRound()) {
+                if (activePlayer == null || activePlayer == p2) {
+                    activePlayer = p1;
+                } else {
+                    activePlayer = p2;
+                }
+                boolean validMove = false;
+                while (!validMove) {
+                    System.out.println(activePlayer.getName() + ": It´s your turn.");
+                    int index = sc.nextInt();
+                    sc.nextLine();
+                    index = index - 1;
+                    validMove = game.placeSign(index, activePlayer.sign);
+                    if(validMove){
+                       winner = game.doWeHaveAWinner(activePlayer.sign, index);
+                    }
+
+                    System.out.println(game.getGameState());
+                }
+                gameRound += 1;
+            }
+            if (winner){
+                winner = false;
+                activePlayer.addScore();
+                System.out.println("Congratulations " + activePlayer.getName() + " you won!");
+
+            }else {
+                System.out.println("The game is Tied");
+            }
+            gameRound = 0;
+
+            System.out.println("The score is:");
+            System.out.println(p1.getName() + " " + p1.getScore());
+            System.out.println(p2.getName() + " " + p2.getScore());
+            System.out.println("Do you want to go again?");
+            System.out.println("y for again. Anything else to quit");
+            again = sc.nextLine();
         }
-        gameRound += 1;
-    }
-
-
-
-
-
-//        array[0][2] = p1.sign;
-//        array[0][1] = p2.sign;
-//        array[0][0] = p1.sign;
-//
-//        array[1][2] = p1.sign;
-//        array[2][1] = p2.sign;
-//        array[0][0] = p1.sign;
-//
-//        array[2][2] = p2.sign;
-
-
-     //   System.out.println(array[0][0][0]);
-
-        // Print a row
-
 
     }
-
-
-    public static Character[][] getBoard(int sizeOfBoard){
-        return new Character[sizeOfBoard][sizeOfBoard];
-    }
-
-
-
 
 }

@@ -14,6 +14,14 @@ public class Player {
         return name;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(){
+        score++;
+    }
+
     public String toString(){
         return "Name: " + name + " Score: " + score + " Sign: " + sign;
     }
