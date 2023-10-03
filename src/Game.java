@@ -6,28 +6,31 @@ public class Game {
     private int numberInARowToWin;
 
     //private Character[][] board;
-    private  Character[] board;
+    private Character[] board;
+
 
     public Game(int boardSize, int numberInARowToWin){
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
         this.board = new  Character[boardSize*boardSize];
         maxRound = boardSize*boardSize;
-
     }
 
     public int getMaxRound() {
         return maxRound;
     }
 
+    public int getBoardSize(){
+        return boardSize;
+    }
+
     public boolean placeSign(int index, char sign){
 
-        if(board[index] == null){
-            board[index] = sign;
-            return true;
-        }
-
-        return false;
+            if(board[index] == null){
+                board[index] = sign;
+                return true;
+            }
+            return false;
     }
 
     public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign){
@@ -48,26 +51,17 @@ public class Game {
         // Check Vertical
         int cellsAbove = indexOfPlacedSign / boardSize;
         int cellsUnder = boardSize -1 - cellsAbove;
-        nrInARow += howManyInARow(cellsAbove, -boardSize, indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(cellsUnder, boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cellsAbove, -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
+        nrInARow += howManyInARow(cellsUnder, boardSize, indexOfPlacedSign, signToSearchFor); //Search down
         if (nrInARow == numberInARowToWin){
             return true;
         }
         nrInARow = 1;
 
         // check Diagonal TopLeft-BottomRight
-        int topLeftMax;
-        int bottomRightMax;
-        if (cellsAbove > cellsToTheLeft){
-            topLeftMax = cellsToTheLeft;
-        }else {
-            topLeftMax = cellsAbove;
-        }
-        if (cellsUnder > cellsToTheRight){
-            bottomRightMax = cellsToTheRight;
-        }else {
-            bottomRightMax = cellsUnder;
-        }
+        int topLeftMax = cellsAbove > cellsToTheLeft ? cellsToTheLeft : cellsAbove;
+        int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
+
         nrInARow += howManyInARow(topLeftMax, (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
         nrInARow += howManyInARow(bottomRightMax,1 + boardSize, indexOfPlacedSign, signToSearchFor);
 
@@ -82,7 +76,6 @@ public class Game {
 
         nrInARow += howManyInARow(bottomLeftMax, -1 + boardSize, indexOfPlacedSign, signToSearchFor);
         nrInARow += howManyInARow(topRightMax, 1 - boardSize, indexOfPlacedSign, signToSearchFor);
-
         if(nrInARow == numberInARowToWin){
             return true;
         }
@@ -100,6 +93,9 @@ public class Game {
         }
         return countsOfSignsInARow;
     }
+
+
+    // In Board perhaps remove
 
     public String getGameState(){
         StringBuilder builder = new StringBuilder();
@@ -120,6 +116,10 @@ public class Game {
             builder.append((i+1) % boardSize == 0 ? "" : "|" );
         }
         return builder.toString();
+    }
+
+    public void resetBoard(){
+        board = new Character[boardSize*boardSize];
     }
 
 }
