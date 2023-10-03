@@ -47,9 +47,9 @@ public class Game {
         //
         //System.out.println("V " + checkVericalWinner(signToSearchFor, indexOfPlacedSign));
 
-        //Check horizontal
+        // add one for the placed sign
         int nrInARow = 1;
-
+        //Check horizontal
 
         int cellsToTheLeft = indexOfPlacedSign % boardSize;
         int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
@@ -61,10 +61,44 @@ public class Game {
         nrInARow = 1;
 
         // Check Vertical
-        int rowIndex = indexOfPlacedSign / boardSize;
-        nrInARow += howManyInARow(rowIndex, -boardSize, indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(boardSize -1 - rowIndex, boardSize, indexOfPlacedSign, signToSearchFor);
+        int cellsAbove = indexOfPlacedSign / boardSize;
+        int cellsUnder = boardSize -1 - cellsAbove;
+        nrInARow += howManyInARow(cellsAbove, -boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cellsUnder, boardSize, indexOfPlacedSign, signToSearchFor);
         if (nrInARow == numberInARowToWin){
+            return true;
+        }
+        nrInARow = 1;
+
+        // check Horizontal TopLeft-BottomRight
+        int topLeftMax;
+        int bottomRightMax;
+        if (cellsAbove > cellsToTheLeft){
+            topLeftMax = cellsToTheLeft;
+        }else {
+            topLeftMax = cellsAbove;
+        }
+        if (cellsUnder > cellsToTheRight){
+            bottomRightMax = cellsToTheRight;
+        }else {
+            bottomRightMax = cellsUnder;
+        }
+        nrInARow += howManyInARow(topLeftMax, (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(bottomRightMax,1 + boardSize, indexOfPlacedSign, signToSearchFor);
+
+        if (nrInARow == numberInARowToWin){
+            return true;
+        }
+        nrInARow = 1;
+
+        // Check Horizontal BottomLeft-TopRight
+        int bottomLeftMax = cellsUnder > cellsToTheLeft ? cellsToTheLeft : cellsUnder;
+        int topRightMax = cellsAbove > cellsToTheRight ? cellsToTheRight : cellsAbove;
+
+        nrInARow += howManyInARow(bottomLeftMax, -1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(topRightMax, 1 - boardSize, indexOfPlacedSign, signToSearchFor);
+
+        if(nrInARow == numberInARowToWin){
             return true;
         }
 
