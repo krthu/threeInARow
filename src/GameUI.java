@@ -87,12 +87,26 @@ public class GameUI {
             // Not reseting player so loser goes first.
 
             printScoreSummary();
-            System.out.println("Do you want to go again?");
-            System.out.println("y for again. Anything else to quit");
+            System.out.println("Do you want to go again? (y)");
+            System.out.println("Anything else for main menu.");
             game.resetBoard();
             again = sc.nextLine();
         }
+        printMainMenu();
+    }
 
+    public void changeActivePlayer(){
+        if (activePlayer == null || activePlayer == p2) {
+            activePlayer = p1;
+        } else {
+            activePlayer = p2;
+        }
+    }
+
+    public void printScoreSummary() {
+        System.out.println("The score is:");
+        System.out.println(p1.getName() + " " + p1.getScore());
+        System.out.println(p2.getName() + " " + p2.getScore());
     }
 
     public void printMainMenu(){
@@ -171,23 +185,6 @@ public class GameUI {
                     0: Back
                 """.formatted(boardSize, inARowToWin));
         }
-
-
-
-
-    public void changeActivePlayer(){
-        if (activePlayer == null || activePlayer == p2) {
-            activePlayer = p1;
-        } else {
-            activePlayer = p2;
-        }
-    }
-
-    public void printScoreSummary() {
-        System.out.println("The score is:");
-        System.out.println(p1.getName() + " " + p1.getScore());
-        System.out.println(p2.getName() + " " + p2.getScore());
-    }
 
 
     public int getIntSafe(String questionToRepeat, int notUnder) {
