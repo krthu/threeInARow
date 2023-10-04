@@ -15,7 +15,7 @@ public class GameUI {
 
     }
 
-    public void createNewGame() {
+    public void createNewGame(int boardSize, int inARowToWin) {
 
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
@@ -24,10 +24,11 @@ public class GameUI {
         p1 = new Player(player1Name, 'x');
         p2 = new Player(player2Name, 'O');
         // Add to Player - array
-        int boardSize = getIntSafe("How many row and columns do you want? \nType 3 for a 3*3 board.", 3);
-        int inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
+//        int boardSize = getIntSafe("How many row and columns do you want? \nType 3 for a 3*3 board.", 3);
+//        int inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
         System.out.println("First to get " + inARowToWin + " in a row gets a point.");
         game = new Game(boardSize, inARowToWin);
+        startGame();
     }
 
     public void startGame() {
@@ -44,17 +45,18 @@ public class GameUI {
 
                 // Gets a valid move. And checks winner
                 while (!validMove) {
-
+                    // Gets a valid move own function?
                     int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
                     index = index - 1;
                     validMove = game.placeSign(index, activePlayer.sign);
+
                     if (validMove) {
                         winner = game.doWeHaveAWinner(activePlayer.sign, index);
                     } else {
                         System.out.println("Square already taken!");
                     }
-                    System.out.println(game.getGameState());
                 }
+                System.out.println(game.getGameState()); // Moved outside loop to show more clearly that no move was made.
 
                 gameRound += 1;
             }
@@ -67,6 +69,7 @@ public class GameUI {
                 System.out.println("The game is Tied");
             }
             gameRound = 0;
+            // Not reseting player so loser goes first.
 
             printScoreSummary();
             System.out.println("Do you want to go again?");
@@ -76,6 +79,86 @@ public class GameUI {
         }
 
     }
+
+    public void printMainMenu(){
+        System.out.println("""
+            ________________________________               
+                
+                  Welcome to TicTacToe
+                   
+            ________________________________        
+                    """);
+        System.out.println("""
+                        Main Menu
+                    ---------------------
+                    1: Multiplayer
+                    2: Single player - Not done
+                    0: Quit
+                """);
+        while (true){
+            String input = sc.nextLine();
+
+            switch (input){
+                case "1" -> {
+                    multiPlayerMenu();
+                }
+                case "2" -> {
+                    // Menu for single player
+                }
+                case "0" -> {
+                    return;
+                }
+                default -> {
+                    System.out.println("Invalid input");
+                }
+
+            }
+        }
+
+    }
+
+    public void multiPlayerMenu(){
+        int boardSize = 3;
+        int inARowToWin = 3;
+        printMultiPlayerMenu(boardSize,inARowToWin);
+        while (true) {
+            String input = sc.nextLine();
+            switch (input) {
+                case "1" -> {
+                    createNewGame(boardSize, inARowToWin);
+                }
+                case "2" -> {
+                    // Set boardsize
+                     boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3);
+                    printMultiPlayerMenu(boardSize,inARowToWin);
+                }
+                case "3" -> {
+                    inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
+                    // Set How many in a row
+                    printMultiPlayerMenu(boardSize,inARowToWin);
+                }
+                case "0" -> {
+                    printMainMenu();
+                }
+                default -> {
+                    System.out.println("Invalid input");
+                }
+            }
+        }
+    }
+       public void  printMultiPlayerMenu(int boardSize, int inARowToWin){
+            System.out.println("""
+                       Multiplayer Menu
+                    ---------------------   
+                    1: Start
+                    2: Set Board size (Set now: %s)
+                    3: Set How many in a row to win (Set now: %s)
+                    0: Back
+                """.formatted(boardSize, inARowToWin));
+        }
+
+
+
 
     public void changeActivePlayer(){
         if (activePlayer == null || activePlayer == p2) {
@@ -110,9 +193,9 @@ public class GameUI {
     }
 
     public int getIntSafe(String questionToRepeat, int notUnder, int notOver) {
-        if (notOver == notUnder) { // Need to decide what to do here
-            return notOver;
-        }
+    //    if (notOver == notUnder) { // Need to decide what to do here either here or in error message.
+     //       return notOver;
+      //  }
 
         String errorMessage = (notOver == notUnder ? "Has to be " + notUnder : "Has to be between " + notUnder + "-" + notOver + ".");
 
