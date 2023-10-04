@@ -15,23 +15,27 @@ public class GameUI {
 
     }
 
-    public void createNewGame(int boardSize, int inARowToWin) {
-
+    public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer) {
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
-        System.out.println("What is the name of player 2");
-        String player2Name = sc.nextLine();
+
         p1 = new Player(player1Name, 'x');
-        p2 = new Player(player2Name, 'O');
+        if(multiplayer) {
+            System.out.println("What is the name of player 2");
+            String player2Name = sc.nextLine();
+            p2 = new Player(player2Name, 'O');
+        }else {
+            p2 = new ComputerPlayer("Rando the Comp", 'O');
+        }
         // Add to Player - array
-//        int boardSize = getIntSafe("How many row and columns do you want? \nType 3 for a 3*3 board.", 3);
-//        int inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
-        System.out.println("First to get " + inARowToWin + " in a row gets a point.");
         game = new Game(boardSize, inARowToWin);
         startGame();
     }
 
+
+
     public void startGame() {
+        System.out.println("First to get " + game.getNumberInARowToWin() + " in a row gets a point.");
         boolean winner = false;
         int gameRound = 0;
        // Player activePlayer = null;
@@ -46,17 +50,28 @@ public class GameUI {
                 // Gets a valid move. And checks winner
                 while (!validMove) {
                     // Gets a valid move own function?
-                    int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
+                    System.out.println(activePlayer.getName() + ": It´s your turn.");
+                 //   int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
+                    try{
+                        int index = activePlayer.getMove(game.getIndexOfOpenCells());
+
                     index = index - 1;
+
                     validMove = game.placeSign(index, activePlayer.sign);
 
                     if (validMove) {
                         winner = game.doWeHaveAWinner(activePlayer.sign, index);
                     } else {
                         System.out.println("Square already taken!");
+
+                    }
+                    }catch (Exception e){
+                        System.out.println("Need to be a Integer between 1-"+game.getBoardSize()*game.getBoardSize() );
+
                     }
                 }
-                System.out.println(game.getGameState()); // Moved outside loop to show more clearly that no move was made.
+                System.out.println(game.getGameState());
+                // Moved outside loop to show more clearly that no move was made.
 
                 gameRound += 1;
             }
@@ -92,7 +107,7 @@ public class GameUI {
                         Main Menu
                     ---------------------
                     1: Multiplayer
-                    2: Single player - Not done
+                    2: Single player - Only random
                     0: Quit
                 """);
         while (true){
@@ -103,7 +118,7 @@ public class GameUI {
                     multiPlayerMenu();
                 }
                 case "2" -> {
-                    // Menu for single player
+                    createNewGame(3,3, false);
                 }
                 case "0" -> {
                     return;
@@ -125,7 +140,7 @@ public class GameUI {
             String input = sc.nextLine();
             switch (input) {
                 case "1" -> {
-                    createNewGame(boardSize, inARowToWin);
+                    createNewGame(boardSize, inARowToWin, true);
                 }
                 case "2" -> {
                     // Set boardsize
@@ -174,7 +189,7 @@ public class GameUI {
         System.out.println(p2.getName() + " " + p2.getScore());
     }
 
-    // Removing this if limit on boardsize. What happens if int is too big?
+
     public int getIntSafe(String questionToRepeat, int notUnder) {
         while (true) {
             System.out.println(questionToRepeat);
@@ -193,9 +208,6 @@ public class GameUI {
     }
 
     public int getIntSafe(String questionToRepeat, int notUnder, int notOver) {
-    //    if (notOver == notUnder) { // Need to decide what to do here either here or in error message.
-     //       return notOver;
-      //  }
 
         String errorMessage = (notOver == notUnder ? "Has to be " + notUnder : "Has to be between " + notUnder + "-" + notOver + ".");
 

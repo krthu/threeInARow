@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Player {
     private String name;
     private int score;
@@ -20,6 +23,21 @@ public class Player {
 
     public void addScore(){
         score++;
+    }
+
+    public int getMove(ArrayList<Integer> indexOfOpenCells) throws Exception{
+        Scanner sc = new Scanner(System.in);
+        while (true){
+            String input = sc.nextLine();
+            //try {
+                int index = Integer.parseInt(input);
+                return index;
+         //   }catch (Exception e){
+         //       System.out.println("Needs to be a integer.");
+         //   }
+        }
+
+
     }
 
     public String toString(){

@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+
 public class Game {
     private int boardSize;
 
     private int maxRound;
 
     private int numberInARowToWin;
+
+    private ArrayList<Integer> indexOfOpenCells;
 
     //private Character[][] board;
     private Character[] board;
@@ -12,8 +16,16 @@ public class Game {
     public Game(int boardSize, int numberInARowToWin){
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
-        this.board = new  Character[boardSize*boardSize];
+        resetBoard();
         maxRound = boardSize*boardSize;
+    }
+
+    public int getNumberInARowToWin() {
+        return numberInARowToWin;
+    }
+
+    public ArrayList<Integer> getIndexOfOpenCells() {
+        return indexOfOpenCells;
     }
 
     public int getMaxRound() {
@@ -24,11 +36,18 @@ public class Game {
         return boardSize;
     }
 
-    public boolean placeSign(int index, char sign){
 
-            if(board[index] == null){
+
+    public boolean placeSign(int index, char sign){
+      //  index < boardSize*boardSize && index >= 0 &&
+            if( board[index] == null ){
                 board[index] = sign;
-                return true;
+                for (int i = 0; i < indexOfOpenCells.size(); i++) {
+                    if(indexOfOpenCells.get(i) == index){
+                        indexOfOpenCells.remove(i);
+                        return true;
+                    }
+                }
             }
             return false;
     }
@@ -120,6 +139,10 @@ public class Game {
 
     public void resetBoard(){
         board = new Character[boardSize*boardSize];
+        indexOfOpenCells = new ArrayList<>();
+        for(int i = 0; i < boardSize*boardSize; i++){
+            indexOfOpenCells.add(i);
+        }
     }
 
 }
