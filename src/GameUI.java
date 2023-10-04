@@ -1,13 +1,15 @@
 import java.util.Scanner;
 
 public class GameUI {
-    Game game;
+    private Game game;
 
-    Player p1;
+    private Player p1;
 
-    Player p2;
+    private Player p2;
 
-    Scanner sc = new Scanner(System.in);
+    private Player activePlayer;
+
+    private Scanner sc = new Scanner(System.in);
 
     public GameUI() {
 
@@ -23,7 +25,6 @@ public class GameUI {
         p2 = new Player(player2Name, 'O');
         // Add to Player - array
         int boardSize = getIntSafe("How many row and columns do you want? \nType 3 for a 3*3 board.", 3);
-
         int inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
         System.out.println("First to get " + inARowToWin + " in a row gets a point.");
         game = new Game(boardSize, inARowToWin);
@@ -32,22 +33,19 @@ public class GameUI {
     public void startGame() {
         boolean winner = false;
         int gameRound = 0;
-        Player activePlayer = null;
-
+       // Player activePlayer = null;
         String again = "y";
         while (again.equalsIgnoreCase("y")) {
             System.out.println(game.getGameState());
             while (!winner && gameRound != game.getMaxRound()) {
-                if (activePlayer == null || activePlayer == p2) {
-                    activePlayer = p1;
-                } else {
-                    activePlayer = p2;
-                }
+
+                changeActivePlayer();
                 boolean validMove = false;
+
+                // Gets a valid move. And checks winner
                 while (!validMove) {
 
                     int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
-
                     index = index - 1;
                     validMove = game.placeSign(index, activePlayer.sign);
                     if (validMove) {
@@ -55,11 +53,9 @@ public class GameUI {
                     } else {
                         System.out.println("Square already taken!");
                     }
-
-                    System.out.println("It has to be a integer between 1-" + game.getBoardSize() * game.getBoardSize());
-
                     System.out.println(game.getGameState());
                 }
+
                 gameRound += 1;
             }
             if (winner) {
@@ -72,7 +68,6 @@ public class GameUI {
             }
             gameRound = 0;
 
-
             printScoreSummary();
             System.out.println("Do you want to go again?");
             System.out.println("y for again. Anything else to quit");
@@ -82,12 +77,21 @@ public class GameUI {
 
     }
 
+    public void changeActivePlayer(){
+        if (activePlayer == null || activePlayer == p2) {
+            activePlayer = p1;
+        } else {
+            activePlayer = p2;
+        }
+    }
+
     public void printScoreSummary() {
         System.out.println("The score is:");
         System.out.println(p1.getName() + " " + p1.getScore());
         System.out.println(p2.getName() + " " + p2.getScore());
     }
 
+    // Removing this if limit on boardsize. What happens if int is too big?
     public int getIntSafe(String questionToRepeat, int notUnder) {
         while (true) {
             System.out.println(questionToRepeat);
@@ -109,6 +113,9 @@ public class GameUI {
         if (notOver == notUnder) { // Need to decide what to do here
             return notOver;
         }
+
+        String errorMessage = (notOver == notUnder ? "Has to be " + notUnder : "Has to be between " + notUnder + "-" + notOver + ".");
+
         while (true) {
             System.out.println(questionToRepeat);
             String input = sc.nextLine();
@@ -116,11 +123,11 @@ public class GameUI {
                 int safeInt = Integer.parseInt(input);
                 if (safeInt >= notUnder && safeInt <= notOver) {
                     return safeInt;
+                }else {
+                    System.out.println(errorMessage);
                 }
-                System.out.println(notOver == notUnder ? "Has to be " + notUnder : "Has to be between " + notUnder + "-" + notOver + ".");
-
             } catch (Exception e) {
-                System.out.println("Has to be a Integer");
+                System.out.println(errorMessage);
             }
         }
     }
