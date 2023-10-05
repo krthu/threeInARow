@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        GameUI gameUI = new GameUI();
+        Game game = new Game();
 
         System.out.println("""
                 ________________________________               
@@ -25,10 +25,10 @@ public class Main {
 
             switch (input) {
                 case "1" -> {
-                    gameUI.multiPlayerMenu();
+                    game.multiPlayerMenu();
                 }
                 case "2" -> {
-                    gameUI.createNewGame(3, 3, false);
+                    game.createNewGame(3, 3, false);
                 }
                 case "0" -> {
                     keepGoing = false;

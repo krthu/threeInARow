@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
-public class GameUI {
+public class Game {
     private Board board;
     private Player player1;
     private Player player2;
     private Player activePlayer;
     private Scanner sc = new Scanner(System.in); // Is this okey?
     
-    public GameUI() {
+    public Game() {
     }
 
     public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer) {
@@ -39,7 +39,7 @@ public class GameUI {
             boolean winner = playMatch();
 
             if (winner) {
-                winner = false;
+
                 activePlayer.addScore();
                 System.out.println("Congratulations " + activePlayer.getName() + " you won!");
 
@@ -52,6 +52,7 @@ public class GameUI {
             System.out.println("Do you want to go again? (y)");
             System.out.println("Anything else for main menu.");
             board.resetBoard();
+
             again = sc.nextLine();
         }
 
