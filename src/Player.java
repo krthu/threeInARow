@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Player {
+public abstract class Player {
     private String name;
     private int score;
 
@@ -25,11 +25,11 @@ public class Player {
         score++;
     }
 
-    public int getMove(ArrayList<Integer> indexOfOpenCells) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
-        int moveIndex = Integer.parseInt(input);
-        return moveIndex;
+    public int getMove() throws Exception{
+//        Scanner sc = new Scanner(System.in);
+//        String input = sc.nextLine();
+//        int moveIndex = Integer.parseInt(input);
+        return 0;
     }
 
     public String toString() {

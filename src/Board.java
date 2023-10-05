@@ -7,7 +7,7 @@ public class Board {
 
     private int numberInARowToWin;
 
-    private ArrayList<Integer> indexOfOpenCells;
+    private ArrayList<Integer> indexOfAvaliableMoves;
 
     //private Character[][] board;
     private Character[] board;
@@ -15,6 +15,7 @@ public class Board {
     public Board(int boardSize, int numberInARowToWin) {
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
+        indexOfAvaliableMoves = new ArrayList<>();
         resetBoard();
         maxMoves = boardSize * boardSize;
     }
@@ -24,7 +25,7 @@ public class Board {
     }
 
     public ArrayList<Integer> getIndexOfOpenCells() {
-        return indexOfOpenCells;
+        return indexOfAvaliableMoves;
     }
 
     public int getMaxMoves() {
@@ -39,9 +40,9 @@ public class Board {
         //  index < boardSize*boardSize && index >= 0 &&
         if (board[index] == null) {
             board[index] = sign;
-            for (int i = 0; i < indexOfOpenCells.size(); i++) {
-                if (indexOfOpenCells.get(i) == index) {
-                    indexOfOpenCells.remove(i);
+            for (int i = 0; i < indexOfAvaliableMoves.size(); i++) {
+                if (indexOfAvaliableMoves.get(i) == index) {
+                    indexOfAvaliableMoves.remove(i);
                     return true;
                 }
             }
@@ -75,7 +76,7 @@ public class Board {
         nrInARow = 1;
 
         // check Diagonal TopLeft-BottomRight
-        int topLeftMax = cellsAbove > cellsToTheLeft ? cellsToTheLeft : cellsAbove;
+        int topLeftMax = Math.min(cellsAbove, cellsToTheLeft);
         int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
 
         nrInARow += howManyInARow(topLeftMax, (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
@@ -132,10 +133,11 @@ public class Board {
     }
 
     public void resetBoard() {
+        // Need work
         board = new Character[boardSize * boardSize];
-        indexOfOpenCells = new ArrayList<>();
+        indexOfAvaliableMoves.clear();
         for (int i = 0; i < boardSize * boardSize; i++) {
-            indexOfOpenCells.add(i);
+            indexOfAvaliableMoves.add(i);
         }
     }
 

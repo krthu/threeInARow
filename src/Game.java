@@ -11,19 +11,19 @@ public class Game {
     }
 
     public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer) {
+        board = new Board(boardSize, inARowToWin);
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
 
-        player1 = new Player(player1Name, 'x');
+        player1 = new HumanPlayer(player1Name, 'x');
         if (multiplayer) {
             System.out.println("What is the name of player 2");
             String player2Name = sc.nextLine();
-            player2 = new Player(player2Name, 'O');
+            player2 = new HumanPlayer(player2Name, 'O');
         } else {
-            player2 = new ComputerPlayer("Rando the Comp", 'O');
+            player2 = new ComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells());
         }
         // Add to Player - array
-        board = new Board(boardSize, inARowToWin);
         startGame();
     }
 
@@ -71,7 +71,7 @@ public class Game {
                 System.out.println(activePlayer.getName() + ": It´s your turn.");
                 //   int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
                 try {
-                    int indexOfMove = activePlayer.getMove(board.getIndexOfOpenCells());
+                    int indexOfMove = activePlayer.getMove();
                     indexOfMove = indexOfMove - 1;
 
                     validMove = board.placeSign(indexOfMove, activePlayer.sign);

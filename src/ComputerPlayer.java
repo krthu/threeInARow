@@ -2,17 +2,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
-
-    public ComputerPlayer(String name, char sign) {
+    private ArrayList<Integer> indexOfAvailableMoves;
+    public ComputerPlayer(String name, char sign, ArrayList<Integer> indexOfAvailableMoves) {
         super(name, sign);
-
+        this.indexOfAvailableMoves = indexOfAvailableMoves;
     }
-
     @Override
-    public int getMove(ArrayList<Integer> indexOfOpenCells) {
+    public int getMove() {
         Random rand = new Random();
-        int indexOfRandomMove = rand.nextInt(indexOfOpenCells.size());
-        return indexOfOpenCells.get(indexOfRandomMove) + 1;
+        int indexOfRandomMove = rand.nextInt(indexOfAvailableMoves.size());
+        return indexOfAvailableMoves.get(indexOfRandomMove) + 1;
     }
 
 }
+
