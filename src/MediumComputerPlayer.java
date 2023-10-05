@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MediumComputerPlayer extends Player{
     ArrayList<Integer> indexOfAvailableMoves;
@@ -14,7 +15,16 @@ public class MediumComputerPlayer extends Player{
         int bestMove;
 
         // find if can win best move
-        
+        for (int move: indexOfAvailableMoves) {
+            HashMap<String, Integer> cells = board.getNumberOfCellsInAllDirections(move);
+
+
+
+
+
+
+
+        }
 
 
         // find move to block
