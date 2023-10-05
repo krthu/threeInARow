@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Game {
     private int boardSize;
 
-    private int maxRound;
+    private int maxMoves;
 
     private int numberInARowToWin;
 
@@ -13,11 +13,11 @@ public class Game {
     private Character[] board;
 
 
-    public Game(int boardSize, int numberInARowToWin){
+    public Game(int boardSize, int numberInARowToWin) {
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
         resetBoard();
-        maxRound = boardSize*boardSize;
+        maxMoves = boardSize * boardSize;
     }
 
     public int getNumberInARowToWin() {
@@ -28,31 +28,30 @@ public class Game {
         return indexOfOpenCells;
     }
 
-    public int getMaxRound() {
-        return maxRound;
+    public int getMaxMoves() {
+        return maxMoves;
     }
 
-    public int getBoardSize(){
+    public int getBoardSize() {
         return boardSize;
     }
 
 
-
-    public boolean placeSign(int index, char sign){
-      //  index < boardSize*boardSize && index >= 0 &&
-            if( board[index] == null ){
-                board[index] = sign;
-                for (int i = 0; i < indexOfOpenCells.size(); i++) {
-                    if(indexOfOpenCells.get(i) == index){
-                        indexOfOpenCells.remove(i);
-                        return true;
-                    }
+    public boolean placeSign(int index, char sign) {
+        //  index < boardSize*boardSize && index >= 0 &&
+        if (board[index] == null) {
+            board[index] = sign;
+            for (int i = 0; i < indexOfOpenCells.size(); i++) {
+                if (indexOfOpenCells.get(i) == index) {
+                    indexOfOpenCells.remove(i);
+                    return true;
                 }
             }
-            return false;
+        }
+        return false;
     }
 
-    public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign){
+    public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign) {
 
         // add one for the placed sign
         int nrInARow = 1;
@@ -62,17 +61,17 @@ public class Game {
         int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
         nrInARow += howManyInARow(cellsToTheLeft, -1, indexOfPlacedSign, signToSearchFor); // Search Left
         nrInARow += howManyInARow(cellsToTheRight, 1, indexOfPlacedSign, signToSearchFor); // Search Right
-        if (nrInARow == numberInARowToWin){
+        if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
 
         // Check Vertical
         int cellsAbove = indexOfPlacedSign / boardSize;
-        int cellsUnder = boardSize -1 - cellsAbove;
+        int cellsUnder = boardSize - 1 - cellsAbove;
         nrInARow += howManyInARow(cellsAbove, -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
         nrInARow += howManyInARow(cellsUnder, boardSize, indexOfPlacedSign, signToSearchFor); //Search down
-        if (nrInARow == numberInARowToWin){
+        if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
@@ -82,9 +81,9 @@ public class Game {
         int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
 
         nrInARow += howManyInARow(topLeftMax, (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(bottomRightMax,1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(bottomRightMax, 1 + boardSize, indexOfPlacedSign, signToSearchFor);
 
-        if (nrInARow == numberInARowToWin){
+        if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
@@ -95,20 +94,23 @@ public class Game {
 
         nrInARow += howManyInARow(bottomLeftMax, -1 + boardSize, indexOfPlacedSign, signToSearchFor);
         nrInARow += howManyInARow(topRightMax, 1 - boardSize, indexOfPlacedSign, signToSearchFor);
-        if(nrInARow == numberInARowToWin){
+        if (nrInARow == numberInARowToWin) {
             return true;
         }
 
         return false;
     }
 
-    public int howManyInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor){
+
+
+
+    public int howManyInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor) {
 
         int countsOfSignsInARow = 0;
-        for (int i = 1; i <= maxIterations; i++){
-            if(board[indexOfPlacedSign + (i * steps)] != null && board[indexOfPlacedSign + (i * steps)] == signToSearchFor ){
+        for (int i = 1; i <= maxIterations; i++) {
+            if (board[indexOfPlacedSign + (i * steps)] != null && board[indexOfPlacedSign + (i * steps)] == signToSearchFor) {
                 countsOfSignsInARow++;
-            }else break;
+            } else break;
         }
         return countsOfSignsInARow;
     }
@@ -116,31 +118,31 @@ public class Game {
 
     // In Board perhaps remove
 
-    public String getGameState(){
+    public String getGameState() {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < board.length; i++){
-            if(i != 0 && i % boardSize == 0){
+        for (int i = 0; i < board.length; i++) {
+            if (i != 0 && i % boardSize == 0) {
                 builder.append("\n");
-                for(int j = 0; j < boardSize; j++){
+                for (int j = 0; j < boardSize; j++) {
                     builder.append("---");
-                    if (j < boardSize -1){
+                    if (j < boardSize - 1) {
                         builder.append("+");
                     }
                 }
                 builder.append("\n");
             }
 
-            builder.append(board[i] == null ? "   ": " " + board[i] + " ");
-            builder.append((i+1) % boardSize == 0 ? "" : "|" );
+            builder.append(board[i] == null ? "   " : " " + board[i] + " ");
+            builder.append((i + 1) % boardSize == 0 ? "" : "|");
         }
         return builder.toString();
     }
 
-    public void resetBoard(){
-        board = new Character[boardSize*boardSize];
+    public void resetBoard() {
+        board = new Character[boardSize * boardSize];
         indexOfOpenCells = new ArrayList<>();
-        for(int i = 0; i < boardSize*boardSize; i++){
+        for (int i = 0; i < boardSize * boardSize; i++) {
             indexOfOpenCells.add(i);
         }
     }

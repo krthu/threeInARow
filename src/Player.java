@@ -7,7 +7,7 @@ public class Player {
 
     protected char sign;
 
-    public Player(String name, char sign){
+    public Player(String name, char sign) {
         this.name = name;
         this.sign = sign;
         score = 0;
@@ -21,26 +21,18 @@ public class Player {
         return score;
     }
 
-    public void addScore(){
+    public void addScore() {
         score++;
     }
 
-    public int getMove(ArrayList<Integer> indexOfOpenCells) throws Exception{
+    public int getMove(ArrayList<Integer> indexOfOpenCells) throws Exception {
         Scanner sc = new Scanner(System.in);
-        while (true){
-            String input = sc.nextLine();
-            //try {
-                int index = Integer.parseInt(input);
-                return index;
-         //   }catch (Exception e){
-         //       System.out.println("Needs to be a integer.");
-         //   }
-        }
-
-
+        String input = sc.nextLine();
+        int moveIndex = Integer.parseInt(input);
+        return moveIndex;
     }
 
-    public String toString(){
+    public String toString() {
         return "Name: " + name + " Score: " + score + " Sign: " + sign;
     }
 
