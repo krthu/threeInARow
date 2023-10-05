@@ -28,22 +28,24 @@ public class MediumComputerPlayer extends Player{
         int bestMove = -1;
         int highestInARow = -1;
 
-
         for (int move: indexOfAvailableMoves) {
 
             int nrInARow;
             HashMap<String, Integer> cells = board.getNumberOfCellsInAllDirections(move);
+            // Horizontal count -
             nrInARow = board.horizontalCount(signToSearchFor, move, cells);
-
+            // Decide if it is vital for winning/losing if so make the MOVE!
             if (nrInARow + 1 == board.getNumberInARowToWin()){
                 bestMove = move;
                 highestInARow = nrInARow;
                 break;
-            } else if (highestInARow < nrInARow) {
+            }
+            // Decide if it is the best move seen
+            else if (highestInARow < nrInARow) {
                 bestMove = move;
                 highestInARow = nrInARow;
             }
-
+            // Vertical count |
             nrInARow = board.verticalCount(signToSearchFor, move, cells);
 
             if (nrInARow + 1 == board.getNumberInARowToWin()){
@@ -54,7 +56,7 @@ public class MediumComputerPlayer extends Player{
                 bestMove = move;
                 highestInARow = nrInARow;
             }
-
+            // Diagonal top left to bottom right count \
             nrInARow = board.topLeftBottomRightCount(signToSearchFor, move, cells);
 
             if (nrInARow + 1 == board.getNumberInARowToWin()){
@@ -65,7 +67,7 @@ public class MediumComputerPlayer extends Player{
                 bestMove = move;
                 highestInARow = nrInARow;
             }
-
+            // Diagonal bottom left to top right count /
             nrInARow = board.bottomLeftTopRightCount(signToSearchFor, move, cells);
 
             if (nrInARow + 1 == board.getNumberInARowToWin()){
@@ -84,7 +86,6 @@ public class MediumComputerPlayer extends Player{
         return bestMoveToWin;
     }
 
-   // public int
 
 
 

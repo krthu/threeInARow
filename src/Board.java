@@ -56,47 +56,26 @@ public class Board {
         HashMap<String, Integer> cells = getNumberOfCellsInAllDirections(indexOfPlacedSign);
         // Add one for the placed sign
         int nrInARow = 1;
-        //Check horizontal
-
-//        int cellsToTheLeft = indexOfPlacedSign % boardSize;
-  //      int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
-   //     nrInARow += howManyInARow(cells.get("toTheLeft"), -1, indexOfPlacedSign, signToSearchFor); // Search Left
-   //     nrInARow += howManyInARow(cells.get("toTheRight"), 1, indexOfPlacedSign, signToSearchFor); // Search Right
+        //Check horizontal win -
         nrInARow += horizontalCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
-        nrInARow = 1;
 
-        // Check Vertical
-    //    int cellsAbove = indexOfPlacedSign / boardSize;
-    //    int cellsUnder = boardSize - 1 - cellsAbove;
-    //    nrInARow += howManyInARow(cells.get("above"), -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
-    //    nrInARow += howManyInARow(cells.get("under"), boardSize, indexOfPlacedSign, signToSearchFor); //Search down
+        nrInARow = 1;
+        // Check vertical win |
         nrInARow += verticalCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
-
-        // check Diagonal TopLeft-BottomRight
-//        int topLeftMax = Math.min(cellsAbove, cellsToTheLeft);
-//        int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
-
-//        nrInARow += howManyInARow(cells.get("aboveLeft"), (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
-//        nrInARow += howManyInARow(cells.get("underRight"), 1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        // Check Diagonal win \
         nrInARow += topLeftBottomRightCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
-
-        // Check Diagonal BottomLeft-TopRight
-//        int bottomLeftMax = cellsUnder > cellsToTheLeft ? cellsToTheLeft : cellsUnder;
-//        int topRightMax = cellsAbove > cellsToTheRight ? cellsToTheRight : cellsAbove;
-
-//        nrInARow += howManyInARow(cells.get("underLeft"), -1 + boardSize, indexOfPlacedSign, signToSearchFor);
-//        nrInARow += howManyInARow(cells.get("aboveRight"), 1 - boardSize, indexOfPlacedSign, signToSearchFor);
+        // Check Diagonal win /
         nrInARow += bottomLeftTopRightCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
