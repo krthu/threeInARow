@@ -8,6 +8,7 @@ public class HumanPlayer extends Player{
     }
     @Override
     public int getMove() throws Exception{
+        // Throws so to show out of bounds message in game
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         int moveIndex = Integer.parseInt(input);

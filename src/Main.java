@@ -18,7 +18,7 @@ public class Main {
                             Main Menu
                         ---------------------
                         1: Multiplayer
-                        2: Single player - Only random
+                        2: Single player
                         0: Quit
                     """);
             String input = sc.nextLine();
@@ -28,7 +28,8 @@ public class Main {
                     game.multiPlayerMenu();
                 }
                 case "2" -> {
-                    game.createNewGame(3, 3, false);
+                    game.singlePlayerMenu();
+                    //game.createNewGame(3, 3, false);
                 }
                 case "0" -> {
                     keepGoing = false;

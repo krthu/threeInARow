@@ -5,12 +5,17 @@ public class Game {
     private Player player1;
     private Player player2;
     private Player activePlayer;
-    private Scanner sc = new Scanner(System.in); // Is this okey?
+    private Scanner sc = new Scanner(System.in);
+
+    public enum Level {
+        EASY,
+        MEDIUM,
+    }
     
     public Game() {
     }
 
-    public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer) {
+    public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer, int level) {
         board = new Board(boardSize, inARowToWin);
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
@@ -21,12 +26,15 @@ public class Game {
             String player2Name = sc.nextLine();
             player2 = new HumanPlayer(player2Name, 'O');
         } else {
-            player2 = new MediumComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells(), board, player1.sign);
+            if (level == 1){
+                player2 = new EasyComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells());
+            }else {
+                player2 = new MediumComputerPlayer("Smarto the comp", 'O', board.getIndexOfOpenCells(), board, player1.sign);
+            }
         }
-        // Add to Player - array
+
         startGame();
     }
-
 
     public void startGame() {
         System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point.");
@@ -35,7 +43,7 @@ public class Game {
         while (again.equalsIgnoreCase("y")) {
             System.out.println(board.getGameState());
 
-            // Place a match of tictactoe an returns if active player won
+            // Place a match of tictactoe and returns if active player won
             boolean winner = playMatch();
 
             if (winner) {
@@ -46,16 +54,15 @@ public class Game {
             } else {
                 System.out.println("The game is Tied");
             }
-            // Not reseting active player so loser goes first.
+            // Not reseting active player so other player goes first.
 
             printScoreSummary();
-            System.out.println("Do you want to go again? (y)");
+            System.out.println("\nDo you want to go again? (y)");
             System.out.println("Anything else for main menu.");
             board.resetBoard();
 
             again = sc.nextLine();
         }
-
     }
 
     public boolean playMatch() {
@@ -67,12 +74,11 @@ public class Game {
             boolean validMove = false;
             // Gets a valid move.
             while (!validMove) {
-                // Get a valid move own function?
+
                 System.out.println(activePlayer.getName() + ": It´s your turn.");
-                //   int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
+
                 try {
                     int indexOfMove = activePlayer.getMove();
-                  //  indexOfMove = indexOfMove - 1;
 
                     validMove = board.placeSign(indexOfMove, activePlayer.sign);
                     // Checks winner
@@ -101,7 +107,7 @@ public class Game {
     }
 
     public void printScoreSummary() {
-        System.out.println("The score is:");
+        System.out.println("\nThe score is:");
         System.out.println(player1.getName() + " " + player1.getScore());
         System.out.println(player2.getName() + " " + player2.getScore());
     }
@@ -111,22 +117,29 @@ public class Game {
         int inARowToWin = 3;
         boolean keepGoing = true;
         while (keepGoing) {
-            printMultiPlayerMenu(boardSize, inARowToWin);
+            System.out.println("""
+                       Multiplayer Menu
+                    ---------------------   
+                    1: Start
+                    2: Set Board size (Set now: %s)
+                    3: Set How many in a row to win (Set now: %s)
+                    0: Back
+                """.formatted(boardSize, inARowToWin));
+
             String input = sc.nextLine();
             switch (input) {
                 case "1" -> {
-                    createNewGame(boardSize, inARowToWin, true);
+                    createNewGame(boardSize, inARowToWin, true, 0);
                     keepGoing = false;
                 }
                 case "2" -> {
                     // Set boardsize
                     boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 50);
-                    //  printMultiPlayerMenu(boardSize, inARowToWin);
+
                 }
                 case "3" -> {
-                    inARowToWin = getIntSafe("How many in a row do you need to win?", 3, boardSize);
                     // Set How many in a row
-                    //    printMultiPlayerMenu(boardSize, inARowToWin);
+                    inARowToWin = getIntSafe("How many in a row do you need to win? Board size is " + boardSize, 3, boardSize);
                 }
                 case "0" -> {
                     keepGoing = false;
@@ -138,15 +151,53 @@ public class Game {
         }
     }
 
-    public void printMultiPlayerMenu(int boardSize, int inARowToWin) {
-        System.out.println("""
-                       Multiplayer Menu
-                    ---------------------   
-                    1: Start
-                    2: Set Board size (Set now: %s)
-                    3: Set How many in a row to win (Set now: %s)
-                    0: Back
-                """.formatted(boardSize, inARowToWin));
+    public void singlePlayerMenu(){
+        int boardSize = 3;
+        int inARowToWin = 3;
+        int level = 1;
+
+        boolean keepGoing = true;
+        while (keepGoing) {
+            String levelText = level == 1 ? "EASY" : "MEDIUM";
+            System.out.println("""
+                           Single player Menu
+                        ---------------------   
+                        1: Start
+                        2: Set Board size (Set now: %s)
+                        3: Set How many in a row to win (Set now: %s)
+                        4: Difficulty level (Set now: %s)
+                        0: Back
+                    """.formatted(boardSize, inARowToWin, levelText));
+
+            String input = sc.nextLine();
+            switch (input) {
+                case "1" -> {
+                    createNewGame(boardSize, inARowToWin, false, level);
+                    keepGoing = false;
+                }
+                case "2" -> {
+                    // Set boardsize
+                    boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 50);
+
+                }
+                case "3" -> {
+                    // Set How many in a row
+                    inARowToWin = getIntSafe("How many in a row do you need to win? Board size is " + boardSize, 3, boardSize);
+                }
+
+                case "4" -> {
+                    level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium", 1,2);
+                }
+                case "0" -> {
+                    keepGoing = false;
+                }
+                default -> {
+                    System.out.println("Invalid input");
+                }
+
+
+            }
+        }
     }
 
     public int getIntSafe(String questionToRepeat, int notUnder, int notOver) {

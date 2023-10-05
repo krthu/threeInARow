@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Board {
     private int boardSize;
@@ -39,7 +38,7 @@ public class Board {
     }
 
     public boolean placeSign(int index, char sign) {
-        //  index < boardSize*boardSize && index >= 0 &&
+
         if (board[index] == null) {
             board[index] = sign;
             for (int i = 0; i < indexOfAvaliableMoves.size(); i++) {
@@ -70,13 +69,13 @@ public class Board {
         }
         nrInARow = 1;
         // Check Diagonal win \
-        nrInARow += topLeftBottomRightCount(signToSearchFor, indexOfPlacedSign, cells);
+        nrInARow += topLeftToBottomRightCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
         // Check Diagonal win /
-        nrInARow += bottomLeftTopRightCount(signToSearchFor, indexOfPlacedSign, cells);
+        nrInARow += bottomLeftToTopRightCount(signToSearchFor, indexOfPlacedSign, cells);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
@@ -99,14 +98,14 @@ public class Board {
         return nrInARow;
     }
 
-    public int topLeftBottomRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
+    public int topLeftToBottomRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
         int nrInARow = 0;
         nrInARow += howManyInARow(cells.get("aboveLeft"), (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
         nrInARow += howManyInARow(cells.get("underRight"), 1 + boardSize, indexOfPlacedSign, signToSearchFor);
         return nrInARow;
     }
 
-    public int bottomLeftTopRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
+    public int bottomLeftToTopRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
         int nrInARow = 0;
         nrInARow += howManyInARow(cells.get("underLeft"), -1 + boardSize, indexOfPlacedSign, signToSearchFor);
         nrInARow += howManyInARow(cells.get("aboveRight"), 1 - boardSize, indexOfPlacedSign, signToSearchFor);
@@ -148,23 +147,23 @@ public class Board {
         numberOfCellsInAllDirections.put("underLeft", cellsUnderLeft);
         numberOfCellsInAllDirections.put("aboveRight", cellsAboveRight);
 
-
         return numberOfCellsInAllDirections;
     }
 
     public String getGameState() {
         StringBuilder builder = new StringBuilder();
+        builder.append("\t");
+        for (int i = 0; i < board.length; i++) { // Loops through whole board
 
-        for (int i = 0; i < board.length; i++) {
-            if (i != 0 && i % boardSize == 0) {
-                builder.append("\n");
+            if (i != 0 && i % boardSize == 0) { // If it is a right edge
+                builder.append("\n\t");
                 for (int j = 0; j < boardSize; j++) {
                     builder.append("---");
                     if (j < boardSize - 1) {
                         builder.append("+");
                     }
                 }
-                builder.append("\n");
+                builder.append("\n\t"); // \t
             }
 
             builder.append(board[i] == null ? "   " : " " + board[i] + " ");

@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ComputerPlayer extends Player {
+public class EasyComputerPlayer extends Player {
     private ArrayList<Integer> indexOfAvailableMoves;
-    public ComputerPlayer(String name, char sign, ArrayList<Integer> indexOfAvailableMoves) {
+    public EasyComputerPlayer(String name, char sign, ArrayList<Integer> indexOfAvailableMoves) {
         super(name, sign);
         this.indexOfAvailableMoves = indexOfAvailableMoves;
     }

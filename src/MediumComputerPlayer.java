@@ -28,6 +28,8 @@ public class MediumComputerPlayer extends Player{
         int bestMove = -1;
         int highestInARow = -1;
 
+
+
         for (int move: indexOfAvailableMoves) {
 
             int nrInARow;
@@ -38,8 +40,7 @@ public class MediumComputerPlayer extends Player{
             if (nrInARow + 1 == board.getNumberInARowToWin()){
                 bestMove = move;
                 highestInARow = nrInARow;
-                break;
-            }
+                break;}
             // Decide if it is the best move seen
             else if (highestInARow < nrInARow) {
                 bestMove = move;
@@ -57,7 +58,7 @@ public class MediumComputerPlayer extends Player{
                 highestInARow = nrInARow;
             }
             // Diagonal top left to bottom right count \
-            nrInARow = board.topLeftBottomRightCount(signToSearchFor, move, cells);
+            nrInARow = board.topLeftToBottomRightCount(signToSearchFor, move, cells);
 
             if (nrInARow + 1 == board.getNumberInARowToWin()){
                 bestMove = move;
@@ -68,7 +69,7 @@ public class MediumComputerPlayer extends Player{
                 highestInARow = nrInARow;
             }
             // Diagonal bottom left to top right count /
-            nrInARow = board.bottomLeftTopRightCount(signToSearchFor, move, cells);
+            nrInARow = board.bottomLeftToTopRightCount(signToSearchFor, move, cells);
 
             if (nrInARow + 1 == board.getNumberInARowToWin()){
                 bestMove = move;
@@ -80,9 +81,11 @@ public class MediumComputerPlayer extends Player{
             }
 
         }
+
         HashMap<String, Integer> bestMoveToWin = new HashMap<>();
         bestMoveToWin.put("bestMove", bestMove);
         bestMoveToWin.put("nrInARow", highestInARow);
+
         return bestMoveToWin;
     }
 
