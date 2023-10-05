@@ -25,10 +25,9 @@ public abstract class Player {
         score++;
     }
 
+    // Most be overwritten
     public int getMove() throws Exception{
-//        Scanner sc = new Scanner(System.in);
-//        String input = sc.nextLine();
-//        int moveIndex = Integer.parseInt(input);
+
         return 0;
     }
 

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Board {
     private int boardSize;
@@ -51,36 +52,36 @@ public class Board {
     }
 
     public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign) {
-
+        HashMap<String, Integer> cells = getNumberOfCellsInAllDirections(indexOfPlacedSign);
         // Add one for the placed sign
         int nrInARow = 1;
         //Check horizontal
 
         int cellsToTheLeft = indexOfPlacedSign % boardSize;
         int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
-        nrInARow += howManyInARow(cellsToTheLeft, -1, indexOfPlacedSign, signToSearchFor); // Search Left
-        nrInARow += howManyInARow(cellsToTheRight, 1, indexOfPlacedSign, signToSearchFor); // Search Right
+        nrInARow += howManyInARow(cells.get("toTheLeft"), -1, indexOfPlacedSign, signToSearchFor); // Search Left
+        nrInARow += howManyInARow(cells.get("toTheRight"), 1, indexOfPlacedSign, signToSearchFor); // Search Right
         if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
 
         // Check Vertical
-        int cellsAbove = indexOfPlacedSign / boardSize;
-        int cellsUnder = boardSize - 1 - cellsAbove;
-        nrInARow += howManyInARow(cellsAbove, -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
-        nrInARow += howManyInARow(cellsUnder, boardSize, indexOfPlacedSign, signToSearchFor); //Search down
+    //    int cellsAbove = indexOfPlacedSign / boardSize;
+    //    int cellsUnder = boardSize - 1 - cellsAbove;
+        nrInARow += howManyInARow(cells.get("above"), -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
+        nrInARow += howManyInARow(cells.get("under"), boardSize, indexOfPlacedSign, signToSearchFor); //Search down
         if (nrInARow == numberInARowToWin) {
             return true;
         }
         nrInARow = 1;
 
         // check Diagonal TopLeft-BottomRight
-        int topLeftMax = Math.min(cellsAbove, cellsToTheLeft);
-        int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
+//        int topLeftMax = Math.min(cellsAbove, cellsToTheLeft);
+//        int bottomRightMax = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
 
-        nrInARow += howManyInARow(topLeftMax, (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(bottomRightMax, 1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cells.get("aboveLeft"), (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cells.get("underRight"), 1 + boardSize, indexOfPlacedSign, signToSearchFor);
 
         if (nrInARow == numberInARowToWin) {
             return true;
@@ -88,11 +89,11 @@ public class Board {
         nrInARow = 1;
 
         // Check Diagonal BottomLeft-TopRight
-        int bottomLeftMax = cellsUnder > cellsToTheLeft ? cellsToTheLeft : cellsUnder;
-        int topRightMax = cellsAbove > cellsToTheRight ? cellsToTheRight : cellsAbove;
+//        int bottomLeftMax = cellsUnder > cellsToTheLeft ? cellsToTheLeft : cellsUnder;
+//        int topRightMax = cellsAbove > cellsToTheRight ? cellsToTheRight : cellsAbove;
 
-        nrInARow += howManyInARow(bottomLeftMax, -1 + boardSize, indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(topRightMax, 1 - boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cells.get("underLeft"), -1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        nrInARow += howManyInARow(cells.get("aboveRight"), 1 - boardSize, indexOfPlacedSign, signToSearchFor);
         if (nrInARow == numberInARowToWin) {
             return true;
         }
@@ -109,6 +110,34 @@ public class Board {
             } else break;
         }
         return countsOfSignsInARow;
+    }
+
+    public HashMap<String, Integer> getNumberOfCellsInAllDirections(int indexOfCell){
+        HashMap<String, Integer> numberOfCellsInAllDirections = new HashMap<>();
+
+        int cellsToTheLeft = indexOfCell % boardSize;
+        int cellsToTheRight = boardSize - 1 - cellsToTheLeft;
+
+        int cellsAbove = indexOfCell / boardSize;
+        int cellsUnder = boardSize - 1 - cellsAbove;
+
+        int cellsAboveLeft = Math.min(cellsAbove, cellsToTheLeft);
+        int cellsUnderRight = cellsUnder > cellsToTheRight ? cellsToTheRight : cellsUnder;
+
+        int cellsUnderLeft = cellsUnder > cellsToTheLeft ? cellsToTheLeft : cellsUnder;
+        int cellsAboveRight = cellsAbove > cellsToTheRight ? cellsToTheRight : cellsAbove;
+
+        numberOfCellsInAllDirections.put("toTheLeft", cellsToTheLeft);
+        numberOfCellsInAllDirections.put("toTheRight", cellsToTheRight);
+        numberOfCellsInAllDirections.put("above", cellsAbove);
+        numberOfCellsInAllDirections.put("under", cellsUnder);
+        numberOfCellsInAllDirections.put("aboveLeft", cellsAboveLeft);
+        numberOfCellsInAllDirections.put("underRight", cellsUnderRight);
+        numberOfCellsInAllDirections.put("underLeft", cellsUnderLeft);
+        numberOfCellsInAllDirections.put("aboveRight", cellsAboveRight);
+
+
+        return numberOfCellsInAllDirections;
     }
 
     public String getGameState() {
