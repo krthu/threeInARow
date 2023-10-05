@@ -109,6 +109,7 @@ public class Board {
         int nrInARow = 0;
         nrInARow += howManyInARow(cells.get("toTheLeft"), -1, indexOfPlacedSign, signToSearchFor); // Search Left
         nrInARow += howManyInARow(cells.get("toTheRight"), 1, indexOfPlacedSign, signToSearchFor); // Search Right
+
         return nrInARow;
     }
 

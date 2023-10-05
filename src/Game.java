@@ -15,13 +15,13 @@ public class Game {
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
 
-        player1 = new HumanPlayer(player1Name, 'x');
+        player1 = new HumanPlayer(player1Name, 'X');
         if (multiplayer) {
             System.out.println("What is the name of player 2");
             String player2Name = sc.nextLine();
             player2 = new HumanPlayer(player2Name, 'O');
         } else {
-            player2 = new ComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells());
+            player2 = new MediumComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells(), board, player1.sign);
         }
         // Add to Player - array
         startGame();
@@ -72,7 +72,7 @@ public class Game {
                 //   int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
                 try {
                     int indexOfMove = activePlayer.getMove();
-                    indexOfMove = indexOfMove - 1;
+                  //  indexOfMove = indexOfMove - 1;
 
                     validMove = board.placeSign(indexOfMove, activePlayer.sign);
                     // Checks winner

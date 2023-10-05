@@ -11,7 +11,7 @@ public class ComputerPlayer extends Player {
     public int getMove() {
         Random rand = new Random();
         int indexOfRandomMove = rand.nextInt(indexOfAvailableMoves.size());
-        return indexOfAvailableMoves.get(indexOfRandomMove) + 1;
+        return indexOfAvailableMoves.get(indexOfRandomMove);
     }
 
 }
