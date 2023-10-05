@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Game {
+public class Board {
     private int boardSize;
 
     private int maxMoves;
@@ -12,7 +12,7 @@ public class Game {
     //private Character[][] board;
     private Character[] board;
 
-    public Game(int boardSize, int numberInARowToWin) {
+    public Board(int boardSize, int numberInARowToWin) {
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
         resetBoard();

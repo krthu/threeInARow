@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class GameUI {
-    private Game game;
+    private Board board;
     private Player player1;
     private Player player2;
     private Player activePlayer;
@@ -23,17 +23,17 @@ public class GameUI {
             player2 = new ComputerPlayer("Rando the Comp", 'O');
         }
         // Add to Player - array
-        game = new Game(boardSize, inARowToWin);
+        board = new Board(boardSize, inARowToWin);
         startGame();
     }
 
 
     public void startGame() {
-        System.out.println("First to get " + game.getNumberInARowToWin() + " in a row gets a point.");
+        System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point.");
 
         String again = "y";
         while (again.equalsIgnoreCase("y")) {
-            System.out.println(game.getGameState());
+            System.out.println(board.getGameState());
 
             // Place a match of tictactoe an returns if active player won
             boolean winner = playMatch();
@@ -51,7 +51,7 @@ public class GameUI {
             printScoreSummary();
             System.out.println("Do you want to go again? (y)");
             System.out.println("Anything else for main menu.");
-            game.resetBoard();
+            board.resetBoard();
             again = sc.nextLine();
         }
 
@@ -60,7 +60,7 @@ public class GameUI {
     public boolean playMatch() {
         boolean winner = false;
         int movesMade = 0;
-        while (!winner && movesMade != game.getMaxMoves()) {
+        while (!winner && movesMade != board.getMaxMoves()) {
 
             changeActivePlayer();
             boolean validMove = false;
@@ -70,21 +70,21 @@ public class GameUI {
                 System.out.println(activePlayer.getName() + ": It´s your turn.");
                 //   int index = getIntSafe((activePlayer.getName() + ": It´s your turn."), 1, game.getBoardSize() * game.getBoardSize());
                 try {
-                    int indexOfMove = activePlayer.getMove(game.getIndexOfOpenCells());
+                    int indexOfMove = activePlayer.getMove(board.getIndexOfOpenCells());
                     indexOfMove = indexOfMove - 1;
 
-                    validMove = game.placeSign(indexOfMove, activePlayer.sign);
+                    validMove = board.placeSign(indexOfMove, activePlayer.sign);
                     // Checks winner
                     if (validMove) {
-                        winner = game.doWeHaveAWinner(activePlayer.sign, indexOfMove);
+                        winner = board.doWeHaveAWinner(activePlayer.sign, indexOfMove);
                     } else {
                         System.out.println("Square already taken!");
                     }
                 } catch (Exception e) {
-                    System.out.println("Need to be a Integer between 1-" + game.getBoardSize() * game.getBoardSize());
+                    System.out.println("Need to be a Integer between 1-" + board.getBoardSize() * board.getBoardSize());
                 }
             }
-            System.out.println(game.getGameState());
+            System.out.println(board.getGameState());
             // Moved outside loop to show more clearly that no move was made.
             movesMade += 1;
         }
