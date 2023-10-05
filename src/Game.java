@@ -12,7 +12,6 @@ public class Game {
     //private Character[][] board;
     private Character[] board;
 
-
     public Game(int boardSize, int numberInARowToWin) {
         this.boardSize = boardSize;
         this.numberInARowToWin = numberInARowToWin;
@@ -36,7 +35,6 @@ public class Game {
         return boardSize;
     }
 
-
     public boolean placeSign(int index, char sign) {
         //  index < boardSize*boardSize && index >= 0 &&
         if (board[index] == null) {
@@ -53,7 +51,7 @@ public class Game {
 
     public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign) {
 
-        // add one for the placed sign
+        // Add one for the placed sign
         int nrInARow = 1;
         //Check horizontal
 
@@ -101,9 +99,6 @@ public class Game {
         return false;
     }
 
-
-
-
     public int howManyInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor) {
 
         int countsOfSignsInARow = 0;
@@ -114,9 +109,6 @@ public class Game {
         }
         return countsOfSignsInARow;
     }
-
-
-    // In Board perhaps remove
 
     public String getGameState() {
         StringBuilder builder = new StringBuilder();

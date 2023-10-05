@@ -25,10 +25,10 @@ public class Main {
 
             switch (input) {
                 case "1" -> {
-                   gameUI.multiPlayerMenu();
+                    gameUI.multiPlayerMenu();
                 }
                 case "2" -> {
-                   gameUI.createNewGame(3, 3, false);
+                    gameUI.createNewGame(3, 3, false);
                 }
                 case "0" -> {
                     keepGoing = false;
@@ -36,13 +36,8 @@ public class Main {
                 default -> {
                     System.out.println("Invalid input");
                 }
-
             }
         }
-
-        //gameUI.mainMenu();
-
-
         System.out.println("Thanks for playing!");
     }
 }
