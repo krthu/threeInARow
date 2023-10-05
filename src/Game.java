@@ -7,32 +7,35 @@ public class Game {
     private Player activePlayer;
     private Scanner sc = new Scanner(System.in);
 
-    public enum Level {
-        EASY,
-        MEDIUM,
+    public enum GameType {
+        MULTIPLAYER,
+        SINGLE_PLAYER_EASY,
+        SINGLE_PLAYER_MEDIUM
     }
     
     public Game() {
     }
 
-    public void createNewGame(int boardSize, int inARowToWin, boolean multiplayer, int level) {
+    public void createNewGame(int boardSize, int inARowToWin, GameType gameType) {
         board = new Board(boardSize, inARowToWin);
         System.out.println("What is the name of player 1:");
         String player1Name = sc.nextLine();
 
         player1 = new HumanPlayer(player1Name, 'X');
-        if (multiplayer) {
-            System.out.println("What is the name of player 2");
-            String player2Name = sc.nextLine();
-            player2 = new HumanPlayer(player2Name, 'O');
-        } else {
-            if (level == 1){
+        
+        switch (gameType){
+            case MULTIPLAYER ->{
+                System.out.println("What is the name of player 2");
+                String player2Name = sc.nextLine();
+                player2 = new HumanPlayer(player2Name, 'O');
+            }
+            case SINGLE_PLAYER_EASY -> {
                 player2 = new EasyComputerPlayer("Rando the Comp", 'O', board.getIndexOfOpenCells());
-            }else {
+            }
+            case SINGLE_PLAYER_MEDIUM -> {
                 player2 = new MediumComputerPlayer("Smarto the comp", 'O', board.getIndexOfOpenCells(), board, player1.sign);
             }
         }
-
         startGame();
     }
 
@@ -129,16 +132,16 @@ public class Game {
             String input = sc.nextLine();
             switch (input) {
                 case "1" -> {
-                    createNewGame(boardSize, inARowToWin, true, 0);
+                    createNewGame(boardSize, inARowToWin, GameType.MULTIPLAYER);
                     keepGoing = false;
                 }
                 case "2" -> {
-                    // Set boardsize
+
                     boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 50);
 
                 }
                 case "3" -> {
-                    // Set How many in a row
+
                     inARowToWin = getIntSafe("How many in a row do you need to win? Board size is " + boardSize, 3, boardSize);
                 }
                 case "0" -> {
@@ -154,11 +157,11 @@ public class Game {
     public void singlePlayerMenu(){
         int boardSize = 3;
         int inARowToWin = 3;
-        int level = 1;
+        GameType gameType = GameType.SINGLE_PLAYER_EASY;
 
         boolean keepGoing = true;
         while (keepGoing) {
-            String levelText = level == 1 ? "EASY" : "MEDIUM";
+            String levelText = gameType == GameType.SINGLE_PLAYER_EASY ? "EASY" : "MEDIUM";
             System.out.println("""
                            Single player Menu
                         ---------------------   
@@ -172,7 +175,7 @@ public class Game {
             String input = sc.nextLine();
             switch (input) {
                 case "1" -> {
-                    createNewGame(boardSize, inARowToWin, false, level);
+                    createNewGame(boardSize, inARowToWin, gameType);
                     keepGoing = false;
                 }
                 case "2" -> {
@@ -186,7 +189,8 @@ public class Game {
                 }
 
                 case "4" -> {
-                    level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium", 1,2);
+                    int level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium", 1,2);
+                    gameType = level == 1 ? GameType.SINGLE_PLAYER_EASY: GameType.SINGLE_PLAYER_MEDIUM;
                 }
                 case "0" -> {
                     keepGoing = false;

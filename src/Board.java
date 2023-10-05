@@ -10,7 +10,6 @@ public class Board {
 
     private ArrayList<Integer> indexOfAvaliableMoves;
 
-    //private Character[][] board;
     private Character[] board;
 
     public Board(int boardSize, int numberInARowToWin) {

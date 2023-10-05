@@ -29,7 +29,6 @@ public class Main {
                 }
                 case "2" -> {
                     game.singlePlayerMenu();
-                    //game.createNewGame(3, 3, false);
                 }
                 case "0" -> {
                     keepGoing = false;
