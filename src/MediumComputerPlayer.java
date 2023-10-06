@@ -18,80 +18,70 @@ public class MediumComputerPlayer extends Player{
         HashMap<String, Integer> bestMoveToWin = getBestMove(sign);
         HashMap<String, Integer> bestMoveToBlock = getBestMove(otherPlayerSign);
 
-        if(bestMoveToWin.get("nrInARow") >= bestMoveToBlock.get("nrInARow")){
+        if(bestMoveToWin.get("signsInARow") >= bestMoveToBlock.get("signsInARow")){
             return bestMoveToWin.get("bestMove");
         }
         return bestMoveToBlock.get("bestMove");
     }
 
     public HashMap<String, Integer>getBestMove(char signToSearchFor){
-        int bestMove = -1;
-        int highestInARow = -1;
 
-
-
+        HashMap<String, Integer> bestMoveToWin = new HashMap<>();
+        bestMoveToWin.put("bestMove", -1); // Adding a value to get in evaluate
+        bestMoveToWin.put("signsInARow", -1);
         for (int move: indexOfAvailableMoves) {
 
-            int nrInARow;
-            HashMap<String, Integer> cells = board.getNumberOfCellsInAllDirections(move);
-            // Horizontal count -
-            nrInARow = board.horizontalCount(signToSearchFor, move, cells);
-            // Decide if it is vital for winning/losing if so make the MOVE!
-            if (nrInARow + 1 == board.getNumberInARowToWin()){
-                bestMove = move;
-                highestInARow = nrInARow;
-                break;}
-            // Decide if it is the best move seen
-            else if (highestInARow < nrInARow) {
-                bestMove = move;
-                highestInARow = nrInARow;
-            }
-            // Vertical count |
-            nrInARow = board.verticalCount(signToSearchFor, move, cells);
+            int signsInARow;
+            HashMap<String, Integer> numberOfCellsInAllDirections = board.getNumberOfCellsInAllDirections(move);
 
-            if (nrInARow + 1 == board.getNumberInARowToWin()){
-                bestMove = move;
-                highestInARow = nrInARow;
-                break;
-            } else if (highestInARow < nrInARow) {
-                bestMove = move;
-                highestInARow = nrInARow;
-            }
-            // Diagonal top left to bottom right count \
-            nrInARow = board.topLeftToBottomRightCount(signToSearchFor, move, cells);
+            // Horizontal count - counts how many cells in a row if move is placed here
+            signsInARow = board.horizontalCount(signToSearchFor, move, numberOfCellsInAllDirections);
 
-            if (nrInARow + 1 == board.getNumberInARowToWin()){
-                bestMove = move;
-                highestInARow = nrInARow;
-                break;
-            } else if (highestInARow < nrInARow) {
-                bestMove = move;
-                highestInARow = nrInARow;
+            evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
+            if (bestMoveToWin.containsKey("winningMove")){
+                return bestMoveToWin;
             }
-            // Diagonal bottom left to top right count /
-            nrInARow = board.bottomLeftToTopRightCount(signToSearchFor, move, cells);
 
-            if (nrInARow + 1 == board.getNumberInARowToWin()){
-                bestMove = move;
-                highestInARow = nrInARow;
-                break;
-            } else if (highestInARow < nrInARow) {
-                bestMove = move;
-                highestInARow = nrInARow;
+            // Vertical count | counts how many cells in a row if move is placed here
+            signsInARow = board.verticalCount(signToSearchFor, move, numberOfCellsInAllDirections);
+            evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
+            if (bestMoveToWin.containsKey("winningMove")){
+                return bestMoveToWin;
+            }
+
+
+            // Diagonal top left to bottom right count \ counts how many cells in a row if move is placed here
+            signsInARow = board.topLeftToBottomRightCount(signToSearchFor, move, numberOfCellsInAllDirections);
+
+            evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
+            if (bestMoveToWin.containsKey("winningMove")){
+                return bestMoveToWin;
+            }
+
+            // Diagonal bottom left to top right count / counts how many cells in a row if move is placed here
+            signsInARow = board.bottomLeftToTopRightCount(signToSearchFor, move, numberOfCellsInAllDirections);
+            evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
+            if (bestMoveToWin.containsKey("winningMove")){
+                return bestMoveToWin;
             }
 
         }
 
-        HashMap<String, Integer> bestMoveToWin = new HashMap<>();
-        bestMoveToWin.put("bestMove", bestMove);
-        bestMoveToWin.put("nrInARow", highestInARow);
-
         return bestMoveToWin;
     }
 
+    public void evaluateMoveInDirection(int signsInARow,int move, HashMap<String, Integer> bestMoveToWin){
+        // Decide if it is vital for winning/losing if so MAKE the MOVE!
+        if (signsInARow + 1 == board.getNumberInARowToWin()) {
+            bestMoveToWin.replace("bestMove", move);
+            bestMoveToWin.replace("signsInARow", signsInARow);
+            bestMoveToWin.put("winningMove", 0);
 
-
-
-
-
+        }
+        // Decide if it is the best move seen
+        else if (bestMoveToWin.get("signsInARow") < signsInARow) {
+                bestMoveToWin.replace("bestMove", move);
+                bestMoveToWin.replace("signsInARow", signsInARow);
+        }
+    }
 }

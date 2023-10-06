@@ -7,12 +7,11 @@ public class Game {
     private Player activePlayer;
     private Scanner sc = new Scanner(System.in);
 
-    public enum GameType {
+    private enum GameType {
         MULTIPLAYER,
         SINGLE_PLAYER_EASY,
         SINGLE_PLAYER_MEDIUM
     }
-    
     public Game() {
     }
 
@@ -22,7 +21,7 @@ public class Game {
         String player1Name = sc.nextLine();
 
         player1 = new HumanPlayer(player1Name, 'X');
-        
+
         switch (gameType){
             case MULTIPLAYER ->{
                 System.out.println("What is the name of player 2");
@@ -40,7 +39,7 @@ public class Game {
     }
 
     public void startGame() {
-        System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point.");
+        System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point. \n");
 
         String again = "y";
         while (again.equalsIgnoreCase("y")) {
@@ -50,8 +49,8 @@ public class Game {
             boolean winner = playMatch();
 
             if (winner) {
-
                 activePlayer.addScore();
+                System.out.println();
                 System.out.println("Congratulations " + activePlayer.getName() + " you won!");
 
             } else {
@@ -77,7 +76,7 @@ public class Game {
             boolean validMove = false;
             // Gets a valid move.
             while (!validMove) {
-
+                System.out.println();
                 System.out.println(activePlayer.getName() + ": It´s your turn.");
 
                 try {
@@ -94,6 +93,7 @@ public class Game {
                     System.out.println("Need to be a Integer between 1-" + board.getBoardSize() * board.getBoardSize());
                 }
             }
+            System.out.println();
             System.out.println(board.getGameState());
             // Moved outside loop to show more clearly that no move was made.
             movesMade += 1;
@@ -198,8 +198,6 @@ public class Game {
                 default -> {
                     System.out.println("Invalid input");
                 }
-
-
             }
         }
     }

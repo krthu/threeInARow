@@ -51,75 +51,75 @@ public class Board {
     }
 
     public boolean doWeHaveAWinner(char signToSearchFor, int indexOfPlacedSign) {
-        HashMap<String, Integer> cells = getNumberOfCellsInAllDirections(indexOfPlacedSign);
+        HashMap<String, Integer> nrOfCellsInAllDirections = getNumberOfCellsInAllDirections(indexOfPlacedSign);
         // Add one for the placed sign
-        int nrInARow = 1;
+        int signsInARow = 1;
         //Check horizontal win -
-        nrInARow += horizontalCount(signToSearchFor, indexOfPlacedSign, cells);
-        if (nrInARow == numberInARowToWin) {
+        signsInARow += horizontalCount(signToSearchFor, indexOfPlacedSign, nrOfCellsInAllDirections);
+        if (signsInARow == numberInARowToWin) {
             return true;
         }
 
-        nrInARow = 1;
+        signsInARow = 1;
         // Check vertical win |
-        nrInARow += verticalCount(signToSearchFor, indexOfPlacedSign, cells);
-        if (nrInARow == numberInARowToWin) {
+        signsInARow += verticalCount(signToSearchFor, indexOfPlacedSign, nrOfCellsInAllDirections);
+        if (signsInARow == numberInARowToWin) {
             return true;
         }
-        nrInARow = 1;
+        signsInARow = 1;
         // Check Diagonal win \
-        nrInARow += topLeftToBottomRightCount(signToSearchFor, indexOfPlacedSign, cells);
-        if (nrInARow == numberInARowToWin) {
+        signsInARow += topLeftToBottomRightCount(signToSearchFor, indexOfPlacedSign, nrOfCellsInAllDirections);
+        if (signsInARow == numberInARowToWin) {
             return true;
         }
-        nrInARow = 1;
+        signsInARow = 1;
         // Check Diagonal win /
-        nrInARow += bottomLeftToTopRightCount(signToSearchFor, indexOfPlacedSign, cells);
-        if (nrInARow == numberInARowToWin) {
+        signsInARow += bottomLeftToTopRightCount(signToSearchFor, indexOfPlacedSign, nrOfCellsInAllDirections);
+        if (signsInARow == numberInARowToWin) {
             return true;
         }
 
         return false;
     }
 
-    public int horizontalCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
-        int nrInARow = 0;
-        nrInARow += howManyInARow(cells.get("toTheLeft"), -1, indexOfPlacedSign, signToSearchFor); // Search Left
-        nrInARow += howManyInARow(cells.get("toTheRight"), 1, indexOfPlacedSign, signToSearchFor); // Search Right
-
-        return nrInARow;
+    public int horizontalCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> nrOfCellsInDirections){
+        int signsInARow = 0;
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("toTheLeft"), -1, indexOfPlacedSign, signToSearchFor); // Search Left
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("toTheRight"), 1, indexOfPlacedSign, signToSearchFor); // Search Right
+        
+        return signsInARow;
     }
 
-    public int verticalCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
-        int nrInARow = 0;
-        nrInARow += howManyInARow(cells.get("above"), -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
-        nrInARow += howManyInARow(cells.get("under"), boardSize, indexOfPlacedSign, signToSearchFor); //Search down
-        return nrInARow;
+    public int verticalCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> nrOfCellsInDirections){
+        int signsInARow = 0;
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("above"), -boardSize, indexOfPlacedSign, signToSearchFor);//Search Upp
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("under"), boardSize, indexOfPlacedSign, signToSearchFor); //Search down
+        return signsInARow;
+    }
+    
+    public int topLeftToBottomRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> nrOfCellsInDirections){
+        int signsInARow = 0;
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("aboveLeft"), (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("underRight"), 1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        return signsInARow;
+    }
+    
+    public int bottomLeftToTopRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> nrOfCellsInDirections){
+        int signsInARow = 0;
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("underLeft"), -1 + boardSize, indexOfPlacedSign, signToSearchFor);
+        signsInARow += countSignsInARow(nrOfCellsInDirections.get("aboveRight"), 1 - boardSize, indexOfPlacedSign, signToSearchFor);
+        return signsInARow;
     }
 
-    public int topLeftToBottomRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
-        int nrInARow = 0;
-        nrInARow += howManyInARow(cells.get("aboveLeft"), (-1 - boardSize), indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(cells.get("underRight"), 1 + boardSize, indexOfPlacedSign, signToSearchFor);
-        return nrInARow;
-    }
+    public int countSignsInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor) {
 
-    public int bottomLeftToTopRightCount(char signToSearchFor, int indexOfPlacedSign, HashMap<String, Integer> cells){
-        int nrInARow = 0;
-        nrInARow += howManyInARow(cells.get("underLeft"), -1 + boardSize, indexOfPlacedSign, signToSearchFor);
-        nrInARow += howManyInARow(cells.get("aboveRight"), 1 - boardSize, indexOfPlacedSign, signToSearchFor);
-        return nrInARow;
-    }
-
-    public int howManyInARow(int maxIterations, int steps, int indexOfPlacedSign, char signToSearchFor) {
-
-        int countsOfSignsInARow = 0;
+        int countOfSignsInARow = 0;
         for (int i = 1; i <= maxIterations; i++) {
             if (board[indexOfPlacedSign + (i * steps)] != null && board[indexOfPlacedSign + (i * steps)] == signToSearchFor) {
-                countsOfSignsInARow++;
+                countOfSignsInARow++;
             } else break;
         }
-        return countsOfSignsInARow;
+        return countOfSignsInARow;
     }
 
     public HashMap<String, Integer> getNumberOfCellsInAllDirections(int indexOfCell){
