@@ -1,12 +1,14 @@
 import java.util.Scanner;
 
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player {
     private Board board;
-    public HumanPlayer(String name, char sign){
+
+    public HumanPlayer(String name, char sign) {
         super(name, sign);
     }
+
     @Override
-    public int getMove() throws Exception{
+    public int getMove() throws Exception {
         // Throws so to show out of bounds message in game
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();

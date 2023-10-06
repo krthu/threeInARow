@@ -24,7 +24,7 @@ public abstract class Player {
     }
 
     // Most be overwritten
-    public int getMove() throws Exception{
+    public int getMove() throws Exception {
 
         return 0;
     }

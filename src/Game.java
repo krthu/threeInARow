@@ -12,6 +12,7 @@ public class Game {
         SINGLE_PLAYER_EASY,
         SINGLE_PLAYER_MEDIUM
     }
+
     public Game() {
     }
 
@@ -22,8 +23,8 @@ public class Game {
 
         player1 = new HumanPlayer(player1Name, 'X');
 
-        switch (gameType){
-            case MULTIPLAYER ->{
+        switch (gameType) {
+            case MULTIPLAYER -> {
                 System.out.println("What is the name of player 2");
                 String player2Name = sc.nextLine();
                 player2 = new HumanPlayer(player2Name, 'O');
@@ -39,7 +40,8 @@ public class Game {
     }
 
     public void startGame() {
-        System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point. \n");
+        System.out.println("First to get " + board.getNumberInARowToWin() + " in a row gets a point.");
+        System.out.println("Typ the number of the cell to place your mark \n");
 
         String again = "y";
         while (again.equalsIgnoreCase("y")) {
@@ -121,13 +123,13 @@ public class Game {
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("""
-                       Multiplayer Menu
-                    ---------------------   
-                    1: Start
-                    2: Set Board size (Set now: %s)
-                    3: Set How many in a row to win (Set now: %s)
-                    0: Back
-                """.formatted(boardSize, inARowToWin));
+                           Multiplayer Menu
+                        ---------------------   
+                        1: Start
+                        2: Set Board size (Set now: %s)
+                        3: Set How many in a row to win (Set now: %s)
+                        0: Back
+                    """.formatted(boardSize, inARowToWin));
 
             String input = sc.nextLine();
             switch (input) {
@@ -137,7 +139,7 @@ public class Game {
                 }
                 case "2" -> {
 
-                    boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 50);
+                    boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 9);
 
                 }
                 case "3" -> {
@@ -154,7 +156,7 @@ public class Game {
         }
     }
 
-    public void singlePlayerMenu(){
+    public void singlePlayerMenu() {
         int boardSize = 3;
         int inARowToWin = 3;
         GameType gameType = GameType.SINGLE_PLAYER_EASY;
@@ -180,17 +182,17 @@ public class Game {
                 }
                 case "2" -> {
                     // Set boardsize
-                    boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board.", 3, 50);
+                    boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board. Between 3-9.", 3, 9);
 
                 }
                 case "3" -> {
                     // Set How many in a row
-                    inARowToWin = getIntSafe("How many in a row do you need to win? Board size is " + boardSize, 3, boardSize);
+                    inARowToWin = getIntSafe("How many in a row do you need to win?\nMax 9. Board size is " + boardSize, 3, boardSize);
                 }
 
                 case "4" -> {
-                    int level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium", 1,2);
-                    gameType = level == 1 ? GameType.SINGLE_PLAYER_EASY: GameType.SINGLE_PLAYER_MEDIUM;
+                    int level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium", 1, 2);
+                    gameType = level == 1 ? GameType.SINGLE_PLAYER_EASY : GameType.SINGLE_PLAYER_MEDIUM;
                 }
                 case "0" -> {
                     keepGoing = false;

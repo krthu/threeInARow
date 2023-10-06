@@ -15,7 +15,7 @@ public class Main {
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("""
-                            Main Menu
+                            Main 2Menu
                         ---------------------
                         1: Multiplayer
                         2: Single player

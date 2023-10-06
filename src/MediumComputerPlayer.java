@@ -1,76 +1,72 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MediumComputerPlayer extends Player{
+public class MediumComputerPlayer extends Player {
     ArrayList<Integer> indexOfAvailableMoves;
     Board board;
 
     char otherPlayerSign;
 
-    public MediumComputerPlayer(String name, char sign, ArrayList<Integer> indexOfAvailableMoves, Board board, char otherPlayerSign){
+    public MediumComputerPlayer(String name, char sign, ArrayList<Integer> indexOfAvailableMoves, Board board, char otherPlayerSign) {
         super(name, sign);
         this.indexOfAvailableMoves = indexOfAvailableMoves;
         this.board = board;
         this.otherPlayerSign = otherPlayerSign;
     }
 
-    public int getMove(){
+    public int getMove() {
         HashMap<String, Integer> bestMoveToWin = getBestMove(sign);
         HashMap<String, Integer> bestMoveToBlock = getBestMove(otherPlayerSign);
 
-        if(bestMoveToWin.get("signsInARow") >= bestMoveToBlock.get("signsInARow")){
+        if (bestMoveToWin.get("signsInARow") >= bestMoveToBlock.get("signsInARow")) {
             return bestMoveToWin.get("bestMove");
         }
         return bestMoveToBlock.get("bestMove");
     }
 
-    public HashMap<String, Integer>getBestMove(char signToSearchFor){
+    public HashMap<String, Integer> getBestMove(char signToSearchFor) {
 
         HashMap<String, Integer> bestMoveToWin = new HashMap<>();
         bestMoveToWin.put("bestMove", -1); // Adding a value to get in evaluate
         bestMoveToWin.put("signsInARow", -1);
-        for (int move: indexOfAvailableMoves) {
+        for (int move : indexOfAvailableMoves) {
 
             int signsInARow;
             HashMap<String, Integer> numberOfCellsInAllDirections = board.getNumberOfCellsInAllDirections(move);
 
             // Horizontal count - counts how many cells in a row if move is placed here
             signsInARow = board.horizontalCount(signToSearchFor, move, numberOfCellsInAllDirections);
-
             evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
-            if (bestMoveToWin.containsKey("winningMove")){
+            if (bestMoveToWin.containsKey("winningMove")) {
                 return bestMoveToWin;
             }
 
             // Vertical count | counts how many cells in a row if move is placed here
             signsInARow = board.verticalCount(signToSearchFor, move, numberOfCellsInAllDirections);
             evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
-            if (bestMoveToWin.containsKey("winningMove")){
+            if (bestMoveToWin.containsKey("winningMove")) {
                 return bestMoveToWin;
             }
 
 
             // Diagonal top left to bottom right count \ counts how many cells in a row if move is placed here
             signsInARow = board.topLeftToBottomRightCount(signToSearchFor, move, numberOfCellsInAllDirections);
-
             evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
-            if (bestMoveToWin.containsKey("winningMove")){
+            if (bestMoveToWin.containsKey("winningMove")) {
                 return bestMoveToWin;
             }
 
             // Diagonal bottom left to top right count / counts how many cells in a row if move is placed here
             signsInARow = board.bottomLeftToTopRightCount(signToSearchFor, move, numberOfCellsInAllDirections);
             evaluateMoveInDirection(signsInARow, move, bestMoveToWin);
-            if (bestMoveToWin.containsKey("winningMove")){
+            if (bestMoveToWin.containsKey("winningMove")) {
                 return bestMoveToWin;
             }
-
         }
-
         return bestMoveToWin;
     }
 
-    public void evaluateMoveInDirection(int signsInARow,int move, HashMap<String, Integer> bestMoveToWin){
+    public void evaluateMoveInDirection(int signsInARow, int move, HashMap<String, Integer> bestMoveToWin) {
         // Decide if it is vital for winning/losing if so MAKE the MOVE!
         if (signsInARow + 1 == board.getNumberInARowToWin()) {
             bestMoveToWin.replace("bestMove", move);
@@ -80,8 +76,8 @@ public class MediumComputerPlayer extends Player{
         }
         // Decide if it is the best move seen
         else if (bestMoveToWin.get("signsInARow") < signsInARow) {
-                bestMoveToWin.replace("bestMove", move);
-                bestMoveToWin.replace("signsInARow", signsInARow);
+            bestMoveToWin.replace("bestMove", move);
+            bestMoveToWin.replace("signsInARow", signsInARow);
         }
     }
 }
