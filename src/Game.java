@@ -36,7 +36,7 @@ public class Game {
             }
             case SINGLE_PLAYER_MEDIUM -> {
                 player2 = new MediumComputerPlayer("Smarto the comp", 'O', board.getIndexOfOpenCells(), board, player1.sign);
-              //  player2 = new HardComputerPlayer(board);
+                //  player2 = new HardComputerPlayer(board);
             }
             case SINGLE_PLAYER_HARD -> {
                 player2 = new HardComputerPlayer(board);
@@ -170,10 +170,16 @@ public class Game {
         boolean keepGoing = true;
         while (keepGoing) {
             String levelText = gameType == GameType.SINGLE_PLAYER_EASY ? "EASY" : "MEDIUM";
-            switch (gameType){
-                case SINGLE_PLAYER_EASY -> {levelText = "EASY";}
-                case SINGLE_PLAYER_MEDIUM -> {levelText = "MEDIUM";}
-                case SINGLE_PLAYER_HARD -> {levelText = "HARD";}
+            switch (gameType) {
+                case SINGLE_PLAYER_EASY -> {
+                    levelText = "EASY";
+                }
+                case SINGLE_PLAYER_MEDIUM -> {
+                    levelText = "MEDIUM";
+                }
+                case SINGLE_PLAYER_HARD -> {
+                    levelText = "HARD";
+                }
             }
             System.out.println("""
                            Single player Menu
@@ -196,7 +202,7 @@ public class Game {
                     if (gameType != GameType.SINGLE_PLAYER_HARD) {
                         boardSize = getIntSafe("How large should the board be? \nType 3 for a 3*3 board. Between 3-9.", 3, 9);
                         inARowToWin = checkForValidNrInARow(boardSize, inARowToWin);
-                    }else {
+                    } else {
                         System.out.println("Hard computer can only play on a 3*3 board.");
                     }
                 }
@@ -208,17 +214,17 @@ public class Game {
                 case "4" -> {
                     int level = getIntSafe("What difficulty level? \n 1: Easy \n 2: Medium\n 3: Hard", 1, 3);
                     //gameType = level == 1 ? GameType.SINGLE_PLAYER_EASY : GameType.SINGLE_PLAYER_MEDIUM;
-                    switch (level){
-                        case 1 ->{
+                    switch (level) {
+                        case 1 -> {
                             gameType = GameType.SINGLE_PLAYER_EASY;
                         }
-                        case 2 ->{
+                        case 2 -> {
                             gameType = GameType.SINGLE_PLAYER_MEDIUM;
                         }
-                        case 3 ->{
+                        case 3 -> {
                             gameType = GameType.SINGLE_PLAYER_HARD;
                             boardSize = 3;
-                            inARowToWin =3;
+                            inARowToWin = 3;
                         }
                     }
                 }
@@ -232,11 +238,11 @@ public class Game {
         }
     }
 
-    public int checkForValidNrInARow(int boardSize, int inARowToWin){
-        if (boardSize < inARowToWin){
+    public int checkForValidNrInARow(int boardSize, int inARowToWin) {
+        if (boardSize < inARowToWin) {
             inARowToWin = boardSize;
         }
-            return inARowToWin;
+        return inARowToWin;
     }
 
     public int getIntSafe(String questionToRepeat, int notUnder, int notOver) {
