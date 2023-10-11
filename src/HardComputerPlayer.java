@@ -33,7 +33,6 @@ public class HardComputerPlayer extends Player{
                 bestMove = move;
                 bestValue = moveValue;
             }
-            System.out.println("Calculated: " + move);
 
         }
 
