@@ -28,6 +28,10 @@ public class Board {
         return indexOfAvaliableMoves;
     }
 
+    public Character[] getBoard() {
+        return board;
+    }
+
     public int getMaxMoves() {
         return maxMoves;
     }
@@ -170,7 +174,7 @@ public class Board {
                 builder.append("\n\t"); // \t
             }
 
-            // Centered for 1-9 and X O Slightly of center for  10 ->
+            // Centered for 1-9 and X O Slightly of center for  10 -> 99
             String emptyCell = i + 1 < 10 ? "  " + (i + 1) + "  " : ("  " + (i + 1) + " ");
             if (board[i] == null) {
                 builder.append(emptyCell);
@@ -181,7 +185,7 @@ public class Board {
         }
         return builder.toString();
     }
-    //" "+(i+1)+" "
+
 
     public void resetBoard() {
         // Need work

@@ -13,7 +13,6 @@ public class HumanPlayer extends Player {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         int moveIndex = Integer.parseInt(input);
-
         return moveIndex - 1;
     }
 
