@@ -27,8 +27,8 @@ public class MediumComputerPlayer extends Player {
     public HashMap<String, Integer> getBestMove(char signToSearchFor) {
 
         HashMap<String, Integer> bestMoveToWin = new HashMap<>();
-        bestMoveToWin.put("bestMove", -1); // Adding a value to get in evaluate
-        bestMoveToWin.put("signsInARow", -1);
+        bestMoveToWin.put("bestMove", -1); // Adding a value to replace in evaluateMoveInDirection. 
+        bestMoveToWin.put("signsInARow", -1); // Adding a value to replace in evaluateMoveInDirection. Put negative value so it is always replaced
         for (int move : indexOfAvailableMoves) {
 
             int signsInARow;
