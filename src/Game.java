@@ -17,7 +17,6 @@ public class Game {
 
     public Game() {
     }
-
     public void createNewGame(int boardSize, int inARowToWin, GameType gameType) {
         board = new Board(boardSize, inARowToWin);
         System.out.println("What is the name of player 1:");
@@ -70,9 +69,9 @@ public class Game {
             System.out.println("\nDo you want to go again? (y)");
             System.out.println("Anything else for main menu.");
             board.resetBoard();
-
             again = sc.nextLine();
         }
+        activePlayer = null;
     }
 
     public boolean playMatch() {
